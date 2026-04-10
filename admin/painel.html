@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="robots" content="noindex, nofollow"/>
+  <title>Painel Admin — Amanda Reis</title>
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg"/>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet"/>
+  <style>
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    :root{
+      --dark:#2D061B;--dark2:#3d0b27;--bege:#E0CCC7;--light:#F3EFEC;--muted:#5C4B57;
+      --sidebar:240px;--green:#2ecc71;--red:#e74c3c;--yellow:#f39c12;--orange:#e67e22;
+    }
+    body{font-family:'Poppins',sans-serif;background:#f7f4f2;color:#222;min-height:100vh;display:flex}
+
+    /* SIDEBAR */
+    .sidebar{width:var(--sidebar);background:var(--dark);min-height:100vh;display:flex;flex-direction:column;position:fixed;top:0;left:0;z-index:100}
+    .sidebar-logo{padding:1.5rem 1.2rem 1rem;border-bottom:1px solid rgba(224,204,199,.1)}
+    .sidebar-logo img{height:36px}
+    .sidebar-label{font-size:.6rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(224,204,199,.35);padding:1.2rem 1.2rem .5rem}
+    .nav-item{display:flex;align-items:center;gap:.75rem;padding:.75rem 1.2rem;cursor:pointer;font-size:.82rem;font-weight:500;color:rgba(224,204,199,.6);border-left:3px solid transparent;transition:all .25s;text-decoration:none}
+    .nav-item svg{width:16px;height:16px;fill:currentColor;flex-shrink:0}
+    .nav-item:hover{color:var(--bege);background:rgba(224,204,199,.06)}
+    .nav-item.active{color:var(--bege);border-left-color:var(--bege);background:rgba(224,204,199,.08)}
+    .sidebar-footer{margin-top:auto;padding:1rem 1.2rem;border-top:1px solid rgba(224,204,199,.1)}
+    .btn-sair{display:flex;align-items:center;gap:.6rem;font-size:.75rem;color:rgba(224,204,199,.4);cursor:pointer;background:none;border:none;font-family:'Poppins',sans-serif;transition:color .3s;padding:0}
+    .btn-sair:hover{color:rgba(224,204,199,.8)}
+    .btn-sair svg{width:14px;height:14px;fill:currentColor}
+
+    /* MAIN */
+    .main{margin-left:var(--sidebar);flex:1;min-height:100vh}
+    .topbar{background:#fff;border-bottom:1px solid rgba(45,6,27,.08);padding:1rem 2rem;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:50}
+    .topbar h1{font-size:1.1rem;font-weight:700;color:var(--dark)}
+    .topbar-sub{font-size:.75rem;color:var(--muted);margin-top:.1rem}
+    .badge-live{display:inline-flex;align-items:center;gap:.4rem;background:rgba(46,204,113,.1);color:#27ae60;border:1px solid rgba(46,204,113,.3);border-radius:50px;padding:.3rem .8rem;font-size:.7rem;font-weight:700}
+    .badge-live::before{content:'';width:6px;height:6px;background:#27ae60;border-radius:50%}
+    .content{padding:2rem}
+
+    /* TABS */
+    .tab-panel{display:none}
+    .tab-panel.active{display:block}
+
+    /* STATS */
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin-bottom:2rem}
+    .stat-card{background:#fff;border-radius:14px;padding:1.4rem;border:1px solid rgba(45,6,27,.07)}
+    .stat-card-label{font-size:.68rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+    .stat-card-val{font-size:2rem;font-weight:800;color:var(--dark);line-height:1}
+    .stat-card-sub{font-size:.72rem;color:var(--muted);margin-top:.3rem}
+    .stat-card-icon{float:right;width:36px;height:36px;background:var(--light);border-radius:10px;display:flex;align-items:center;justify-content:center;margin-top:-2.5rem}
+    .stat-card-icon svg{width:18px;height:18px;fill:var(--muted)}
+
+    /* CARDS GENÉRICOS */
+    .analytics-card{background:#fff;border-radius:14px;padding:1.5rem;border:1px solid rgba(45,6,27,.07);margin-bottom:1.5rem}
+    .analytics-card h3{font-size:.85rem;font-weight:700;color:var(--dark);margin-bottom:1rem}
+    .section-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.2rem}
+    .section-hd h2{font-size:1rem;font-weight:700;color:var(--dark)}
+
+    /* BOTÕES */
+    .btn{display:inline-flex;align-items:center;gap:.5rem;padding:.6rem 1.3rem;border-radius:50px;font-family:'Poppins',sans-serif;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;cursor:pointer;border:none;transition:all .25s}
+    .btn svg{width:14px;height:14px;fill:currentColor}
+    .btn-primary{background:var(--dark);color:var(--light)}
+    .btn-primary:hover{background:var(--dark2);transform:translateY(-2px)}
+    .btn-primary:disabled{opacity:.5;cursor:not-allowed;transform:none}
+    .btn-secondary{background:var(--light);color:var(--dark);border:1.5px solid rgba(45,6,27,.15)}
+    .btn-secondary:hover{background:var(--bege)}
+    .btn-danger{background:rgba(231,76,60,.1);color:var(--red);border:1.5px solid rgba(231,76,60,.2)}
+    .btn-danger:hover{background:rgba(231,76,60,.2)}
+    .btn-warning{background:rgba(230,126,34,.1);color:var(--orange);border:1.5px solid rgba(230,126,34,.2)}
+    .btn-sm{padding:.4rem .9rem;font-size:.7rem}
+
+    /* FIELDS */
+    .field{margin-bottom:1rem}
+    .field label{display:block;font-size:.72rem;font-weight:600;color:var(--muted);margin-bottom:.4rem}
+    .field input,.field textarea,.field select{width:100%;padding:.7rem .9rem;border:1px solid rgba(45,6,27,.15);border-radius:8px;font-family:'Poppins',sans-serif;font-size:.85rem;color:#222;outline:none;transition:border-color .3s;background:#fafafa}
+    .field input:focus,.field textarea:focus{border-color:var(--muted);background:#fff}
+    .field textarea{resize:vertical;min-height:80px}
+    .field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+    /* BLOG LIST */
+    .blog-list-admin{display:flex;flex-direction:column;gap:1rem;margin-bottom:1.5rem}
+    .blog-item{background:#fff;border-radius:14px;padding:1.2rem 1.4rem;border:1px solid rgba(45,6,27,.07);display:flex;align-items:center;gap:1.2rem}
+    .blog-item-img{width:70px;height:50px;border-radius:8px;object-fit:cover;background:var(--light);flex-shrink:0}
+    .blog-item-info{flex:1;min-width:0}
+    .blog-item-cat{font-size:.62rem;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+    .blog-item-titulo{font-size:.9rem;font-weight:700;color:var(--dark);margin:.2rem 0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .blog-item-data{font-size:.7rem;color:var(--muted);opacity:.7}
+    .blog-item-actions{display:flex;gap:.5rem;flex-shrink:0;align-items:center}
+    .badge-prog{display:inline-flex;align-items:center;gap:.3rem;background:rgba(230,126,34,.12);color:var(--orange);border:1px solid rgba(230,126,34,.25);border-radius:50px;padding:.2rem .7rem;font-size:.65rem;font-weight:700}
+    .badge-prog::before{content:'';width:5px;height:5px;background:var(--orange);border-radius:50%}
+    .badge-pub{display:inline-flex;align-items:center;gap:.3rem;background:rgba(46,204,113,.1);color:#27ae60;border:1px solid rgba(46,204,113,.25);border-radius:50px;padding:.2rem .7rem;font-size:.65rem;font-weight:700}
+    .badge-pub::before{content:'';width:5px;height:5px;background:#27ae60;border-radius:50%}
+
+    /* UPLOAD FOTO */
+    .foto-upload-area{border:2px dashed rgba(45,6,27,.18);border-radius:12px;padding:1.5rem;text-align:center;cursor:pointer;transition:border-color .3s,background .3s;position:relative}
+    .foto-upload-area:hover{border-color:var(--muted);background:rgba(45,6,27,.02)}
+    .foto-upload-area.dragover{border-color:var(--dark);background:rgba(45,6,27,.05)}
+    .foto-upload-area input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+    .foto-upload-area .upload-icon svg{width:32px;height:32px;fill:rgba(92,75,87,.4);margin-bottom:.5rem}
+    .foto-upload-area p{font-size:.8rem;color:var(--muted)}
+    .foto-upload-area small{font-size:.72rem;color:rgba(92,75,87,.5)}
+    .foto-preview{width:100%;height:160px;object-fit:cover;border-radius:10px;display:none;margin-top:.8rem}
+    .foto-preview.vis{display:block}
+    .upload-progress{background:rgba(45,6,27,.06);border-radius:50px;height:6px;margin-top:.8rem;overflow:hidden;display:none}
+    .upload-progress.vis{display:block}
+    .upload-progress-bar{height:100%;background:var(--dark);border-radius:50px;transition:width .3s;width:0}
+    .upload-status{font-size:.72rem;margin-top:.4rem;color:var(--muted);display:none}
+    .upload-status.vis{display:block}
+
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;opacity:0;pointer-events:none;transition:opacity .3s}
+    .modal-overlay.open{opacity:1;pointer-events:all}
+    .modal{background:#fff;border-radius:18px;padding:2rem;width:100%;max-width:720px;max-height:90vh;overflow-y:auto;transform:translateY(20px);transition:transform .3s}
+    .modal-overlay.open .modal{transform:translateY(0)}
+    .modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+    .modal-header h2{font-size:1.1rem;font-weight:700;color:var(--dark)}
+    .modal-close{background:none;border:none;cursor:pointer;font-size:1.4rem;color:var(--muted);line-height:1}
+    .modal-footer{display:flex;justify-content:flex-end;gap:.8rem;margin-top:1.5rem;padding-top:1.5rem;border-top:1px solid rgba(45,6,27,.08)}
+
+    /* TOAST */
+    .toast{position:fixed;bottom:2rem;right:2rem;background:var(--dark);color:var(--light);padding:.8rem 1.4rem;border-radius:50px;font-size:.82rem;font-weight:600;z-index:999;transform:translateY(20px);opacity:0;transition:all .3s;pointer-events:none}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast.erro{background:#c0392b}
+
+    /* INFO BOX */
+    .info-box{background:rgba(45,6,27,.04);border:1px solid rgba(45,6,27,.1);border-radius:12px;padding:1.2rem 1.4rem;margin-bottom:1.5rem}
+    .info-box h4{font-size:.8rem;font-weight:700;color:var(--dark);margin-bottom:.5rem}
+    .info-box p,.info-box li{font-size:.78rem;color:var(--muted);line-height:1.7}
+    .info-box ol,.info-box ul{padding-left:1.2rem}
+    .info-box code{background:rgba(45,6,27,.08);color:var(--dark);padding:.1rem .4rem;border-radius:4px;font-family:monospace;font-size:.78rem}
+
+    .divider{border:none;border-top:1px solid rgba(45,6,27,.08);margin:1.5rem 0}
+
+    @media(max-width:900px){
+      .sidebar{width:60px}
+      .sidebar-logo img,.sidebar-label,.nav-item span,.btn-sair span{display:none}
+      .main{margin-left:60px}
+      .stats-grid{grid-template-columns:1fr 1fr}
+      .field-row{grid-template-columns:1fr}
+    }
+  </style>
+</head>
+<body>
+
+<!-- ════════════════ SIDEBAR ════════════════ -->
+<aside class="sidebar">
+  <div class="sidebar-logo"><img src="../images/logo.png" alt="Amanda Reis"/></div>
+  <div class="sidebar-label">Menu</div>
+  <a class="nav-item active" onclick="aba('dashboard')" href="#">
+    <svg viewBox="0 0 24 24"><path d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
+    <span>Dashboard</span>
+  </a>
+  <a class="nav-item" onclick="aba('blog')" href="#">
+    <svg viewBox="0 0 24 24"><path d="M3 18h12v-2H3v2zm0-5h12v-2H3v2zm0-7v2h12V6H3zm13 6.5c0 2.5 2 4.5 4.5 4.5s4.5-2 4.5-4.5S23 8 20.5 8 16 10 16 12.5zm6 0l-2.5 2.5-1.5-1.5-1 1 2.5 2.5 3.5-3.5-1-1z"/></svg>
+    <span>Blog</span>
+  </a>
+  <div class="sidebar-label">Site</div>
+  <a class="nav-item" href="../index.html" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+    <span>Ver site</span>
+  </a>
+  <a class="nav-item" href="../blog/index.html" target="_blank">
+    <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg>
+    <span>Ver blog</span>
+  </a>
+  <div class="sidebar-footer">
+    <button class="btn-sair" onclick="sair()">
+      <svg viewBox="0 0 24 24"><path d="M17 7l-1.41 1.41L18.17 11H8v2h10.17l-2.58 2.58L17 17l5-5-5-5zM4 5h8V3H4c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h8v-2H4V5z"/></svg>
+      <span>Sair</span>
+    </button>
+  </div>
+</aside>
+
+<!-- ════════════════ MAIN ════════════════ -->
+<main class="main">
+  <div class="topbar">
+    <div>
+      <h1 id="topbar-title">Dashboard</h1>
+      <div class="topbar-sub" id="topbar-sub">Visão geral</div>
+    </div>
+    <div class="badge-live">Site no ar</div>
+  </div>
+
+  <div class="content">
+
+    <!-- ── DASHBOARD ── -->
+    <div class="tab-panel active" id="tab-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11z"/></svg></div>
+          <div class="stat-card-label">Publicados</div>
+          <div class="stat-card-val" id="stat-pub">—</div>
+          <div class="stat-card-sub">artigos no ar</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
+          <div class="stat-card-label">Programados</div>
+          <div class="stat-card-val" id="stat-prog">—</div>
+          <div class="stat-card-sub">aguardando data</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/></svg></div>
+          <div class="stat-card-label">Status</div>
+          <div class="stat-card-val" style="font-size:1.1rem;padding-top:.4rem;color:#27ae60">Online</div>
+          <div class="stat-card-sub">Firebase ativo</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-card-icon"><svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg></div>
+          <div class="stat-card-label">Próximo artigo</div>
+          <div class="stat-card-val" id="stat-prox" style="font-size:.85rem;padding-top:.5rem">—</div>
+          <div class="stat-card-sub" id="stat-prox-data">—</div>
+        </div>
+      </div>
+
+      <div class="analytics-card">
+        <h3>⚡ Atalhos rápidos</h3>
+        <div style="display:flex;gap:.8rem;flex-wrap:wrap;margin-top:.5rem">
+          <button class="btn btn-primary" onclick="aba('blog');abrirModalNovo()">
+            <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+            Novo artigo
+          </button>
+          <a class="btn btn-secondary" href="https://analytics.google.com" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2zm-7 14l-4-4 1.41-1.41L12 14.17l6.59-6.59L20 9l-8 8z"/></svg>
+            Google Analytics
+          </a>
+          <a class="btn btn-secondary" href="https://console.firebase.google.com" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M3.89 15.672L6.255.461A.542.542 0 0 1 7.27.288l2.543 4.771zm16.794 3.692l-2.25-14a.54.54 0 0 0-.919-.295L3.316 19.365l7.856 4.427a1.621 1.621 0 0 0 1.588 0zM14.3 7.147l-1.82-3.482a.542.542 0 0 0-.96 0L3.53 17.984z"/></svg>
+            Firebase Console
+          </a>
+          <a class="btn btn-secondary" href="https://cloudinary.com/console" target="_blank">
+            <svg viewBox="0 0 24 24"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96z"/></svg>
+            Cloudinary
+          </a>
+        </div>
+      </div>
+
+      <div class="info-box">
+        <h4>📋 Como este painel funciona</h4>
+        <p>Os artigos são salvos <strong>diretamente no Firebase Firestore</strong> e o blog lê em tempo real — sem precisar subir nada pro GitHub. As imagens vão pro <strong>Cloudinary</strong> automaticamente ao fazer upload. Artigos com data futura ficam <strong>programados</strong> e aparecem no site apenas na data escolhida.</p>
+      </div>
+    </div>
+
+    <!-- ── BLOG ── -->
+    <div class="tab-panel" id="tab-blog">
+      <div class="section-hd">
+        <h2>Artigos do Blog</h2>
+        <button class="btn btn-primary" onclick="abrirModalNovo()">
+          <svg viewBox="0 0 24 24"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          Novo artigo
+        </button>
+      </div>
+
+      <div class="blog-list-admin" id="blog-lista">
+        <p style="color:var(--muted);font-size:.85rem;padding:1rem">Carregando artigos…</p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<!-- ════════════════ MODAL ARTIGO ════════════════ -->
+<div class="modal-overlay" id="modal-artigo">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-titulo">Novo artigo</h2>
+      <button class="modal-close" onclick="fecharModal()">×</button>
+    </div>
+
+    <input type="hidden" id="art-docid"/>
+
+    <div class="field">
+      <label>Título *</label>
+      <input type="text" id="art-titulo" placeholder="Ex: Como pedir aposentadoria pelo INSS"/>
+    </div>
+
+    <div class="field-row">
+      <div class="field">
+        <label>Categoria *</label>
+        <select id="art-cat">
+          <option value="Previdenciário">Previdenciário</option>
+          <option value="Trabalhista">Trabalhista</option>
+          <option value="Família">Família</option>
+          <option value="Eleitoral">Eleitoral</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Data de publicação *</label>
+        <input type="date" id="art-data"/>
+      </div>
+    </div>
+
+    <div class="field">
+      <label>Resumo (aparece no card) *</label>
+      <textarea id="art-resumo" placeholder="1-2 frases descrevendo o artigo…" style="min-height:60px"></textarea>
+    </div>
+
+    <div class="field">
+      <label>Imagem de capa</label>
+      <div class="foto-upload-area" id="foto-upload-area">
+        <input type="file" id="art-foto-input" accept="image/jpeg,image/png,image/webp" onchange="selecionarFoto(this)"/>
+        <div class="upload-icon"><svg viewBox="0 0 24 24"><path d="M19.35 10.04A7.49 7.49 0 0 0 12 4C9.11 4 6.6 5.64 5.35 8.04A5.994 5.994 0 0 0 0 14c0 3.31 2.69 6 6 6h13c2.76 0 5-2.24 5-5 0-2.64-2.05-4.78-4.65-4.96zM14 13v4h-4v-4H7l5-5 5 5h-3z"/></svg></div>
+        <p>Clique ou arraste uma foto aqui</p>
+        <small>JPG, PNG ou WebP · Tamanho recomendado: 1200×675px</small>
+        <img id="foto-preview" class="foto-preview" alt="preview"/>
+      </div>
+      <div class="upload-progress" id="upload-progress"><div class="upload-progress-bar" id="upload-bar"></div></div>
+      <div class="upload-status" id="upload-status"></div>
+      <input type="hidden" id="art-foto-url"/>
+    </div>
+
+    <div class="field">
+      <label>Conteúdo completo *</label>
+      <textarea id="art-conteudo" placeholder="Escreva o texto aqui. Linha em branco = novo parágrafo. ## Título = subtítulo. - item = lista." style="min-height:220px;font-family:monospace;font-size:.82rem"></textarea>
+      <small style="color:var(--muted);font-size:.7rem">## Subtítulo · - item de lista · Linha em branco separa parágrafos</small>
+    </div>
+
+    <div class="modal-footer">
+      <button class="btn btn-secondary" onclick="fecharModal()">Cancelar</button>
+      <button class="btn btn-primary" id="btn-salvar" onclick="salvarArtigo()">
+        <svg viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg>
+        Salvar no Firebase
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  ⚙️  CONFIGURAÇÕES — preencha com seus dados
+// ══════════════════════════════════════════════════════════════
+
+const FIREBASE_CONFIG = {
+  apiKey:            "COLE_SEU_apiKey_AQUI",
+  authDomain:        "COLE_SEU_authDomain_AQUI",
+  projectId:         "COLE_SEU_projectId_AQUI",
+  storageBucket:     "COLE_SEU_storageBucket_AQUI",
+  messagingSenderId: "COLE_SEU_messagingSenderId_AQUI",
+  appId:             "COLE_SEU_appId_AQUI"
+};
+
+// Cloudinary — configure em https://cloudinary.com/console
+const CLOUDINARY_CLOUD = "COLE_SEU_CLOUD_NAME";   // ex: "amandareisadv"
+const CLOUDINARY_PRESET = "COLE_SEU_UPLOAD_PRESET"; // Upload Preset sem assinatura (unsigned)
+
+// ══════════════════════════════════════════════════════════════
+
+let db, auth, ARTIGOS_CACHE = [];
+let fotoArquivo = null;
+
+window.addEventListener('load', () => {
+  import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js').then(({ initializeApp }) => {
+    Promise.all([
+      import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js'),
+      import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js'),
+    ]).then(([authMod, fsMod]) => {
+      const app = initializeApp(FIREBASE_CONFIG);
+      auth = authMod.getAuth(app);
+      db   = fsMod.getFirestore(app);
+
+      // Verifica autenticação
+      authMod.onAuthStateChanged(auth, user => {
+        if (!user) { window.location.href = 'index.html'; return; }
+        carregarArtigos(fsMod);
+      });
+
+      // Sair
+      window.sair = () => {
+        authMod.signOut(auth).then(() => { window.location.href = 'index.html'; });
+      };
+    });
+  });
+});
+
+// ── CARREGAR ARTIGOS ──────────────────────────────────────────
+async function carregarArtigos(fsMod) {
+  try {
+    const { collection, getDocs, orderBy, query } = fsMod;
+    const q    = query(collection(db, 'artigos'), orderBy('publicadoEm', 'asc'));
+    const snap = await getDocs(q);
+
+    ARTIGOS_CACHE = snap.docs.map(d => ({ _docid: d.id, ...d.data() }));
+    renderBlog();
+    atualizarStats();
+  } catch(e) {
+    console.error(e);
+    toast('Erro ao carregar artigos: ' + e.message, true);
+  }
+}
+
+// ── RENDER LISTA ──────────────────────────────────────────────
+function estaPublicado(a) {
+  if (!a.publicadoEm) return true;
+  const hoje = new Date(); hoje.setHours(0,0,0,0);
+  return new Date(a.publicadoEm + 'T00:00:00') <= hoje;
+}
+
+function renderBlog() {
+  const lista = document.getElementById('blog-lista');
+  if (!ARTIGOS_CACHE.length) {
+    lista.innerHTML = '<p style="color:var(--muted);font-size:.85rem;padding:1rem">Nenhum artigo cadastrado ainda.</p>';
+    return;
+  }
+  lista.innerHTML = [...ARTIGOS_CACHE].reverse().map(a => {
+    const pub = estaPublicado(a);
+    const badge = pub
+      ? '<span class="badge-pub">Publicado</span>'
+      : '<span class="badge-prog">Programado</span>';
+    const imgEl = a.foto
+      ? `<img class="blog-item-img" src="${a.foto}" alt="${a.titulo}"/>`
+      : `<div class="blog-item-img" style="display:flex;align-items:center;justify-content:center"><svg width="24" height="24" viewBox="0 0 24 24" fill="#ccc"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div>`;
+    return `
+      <div class="blog-item">
+        ${imgEl}
+        <div class="blog-item-info">
+          <div class="blog-item-cat">${a.categoria}</div>
+          <div class="blog-item-titulo">${a.titulo}</div>
+          <div class="blog-item-data">${formatarData(a.publicadoEm)}</div>
+        </div>
+        <div class="blog-item-actions">
+          ${badge}
+          <button class="btn btn-secondary btn-sm" onclick="editarArtigo('${a._docid}')">Editar</button>
+          <button class="btn btn-danger btn-sm" onclick="excluirArtigo('${a._docid}')">Excluir</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+function atualizarStats() {
+  const pub   = ARTIGOS_CACHE.filter(estaPublicado).length;
+  const prog  = ARTIGOS_CACHE.filter(a => !estaPublicado(a)).length;
+  document.getElementById('stat-pub').textContent  = pub;
+  document.getElementById('stat-prog').textContent = prog;
+
+  const prox = [...ARTIGOS_CACHE]
+    .filter(a => !estaPublicado(a))
+    .sort((a,b) => a.publicadoEm.localeCompare(b.publicadoEm))[0];
+
+  if (prox) {
+    document.getElementById('stat-prox').textContent      = prox.titulo.substring(0,30) + '…';
+    document.getElementById('stat-prox-data').textContent = formatarData(prox.publicadoEm);
+  }
+}
+
+function formatarData(iso) {
+  if (!iso) return '—';
+  const [y,m,d] = iso.split('-');
+  return `${d}/${m}/${y}`;
+}
+
+// ── MODAL ─────────────────────────────────────────────────────
+function abrirModalNovo() {
+  document.getElementById('modal-titulo').textContent = 'Novo artigo';
+  document.getElementById('art-docid').value    = '';
+  document.getElementById('art-titulo').value   = '';
+  document.getElementById('art-cat').value      = 'Previdenciário';
+  document.getElementById('art-data').value     = hojeISO();
+  document.getElementById('art-resumo').value   = '';
+  document.getElementById('art-conteudo').value = '';
+  document.getElementById('art-foto-url').value = '';
+  document.getElementById('foto-preview').classList.remove('vis');
+  document.getElementById('foto-preview').src = '';
+  fotoArquivo = null;
+  resetUploadUI();
+  document.getElementById('modal-artigo').classList.add('open');
+}
+
+function editarArtigo(docid) {
+  const a = ARTIGOS_CACHE.find(x => x._docid === docid);
+  if (!a) return;
+  document.getElementById('modal-titulo').textContent = 'Editar artigo';
+  document.getElementById('art-docid').value    = docid;
+  document.getElementById('art-titulo').value   = a.titulo;
+  document.getElementById('art-cat').value      = a.categoria;
+  document.getElementById('art-data').value     = a.publicadoEm || hojeISO();
+  document.getElementById('art-resumo').value   = a.resumo;
+  document.getElementById('art-conteudo').value = htmlParaTexto(a.conteudo);
+  document.getElementById('art-foto-url').value = a.foto || '';
+  fotoArquivo = null;
+  resetUploadUI();
+  if (a.foto) {
+    const prev = document.getElementById('foto-preview');
+    prev.src = a.foto;
+    prev.classList.add('vis');
+  } else {
+    document.getElementById('foto-preview').classList.remove('vis');
+  }
+  document.getElementById('modal-artigo').classList.add('open');
+}
+
+async function excluirArtigo(docid) {
+  if (!confirm('Excluir este artigo?')) return;
+  try {
+    const { doc, deleteDoc } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    await deleteDoc(doc(db, 'artigos', docid));
+    ARTIGOS_CACHE = ARTIGOS_CACHE.filter(a => a._docid !== docid);
+    renderBlog(); atualizarStats();
+    toast('Artigo excluído!');
+  } catch(e) { toast('Erro ao excluir: ' + e.message, true); }
+}
+
+function fecharModal() {
+  document.getElementById('modal-artigo').classList.remove('open');
+}
+
+// ── SALVAR NO FIREBASE ────────────────────────────────────────
+async function salvarArtigo() {
+  const titulo    = document.getElementById('art-titulo').value.trim();
+  const resumo    = document.getElementById('art-resumo').value.trim();
+  const conteudo  = document.getElementById('art-conteudo').value.trim();
+  const dataISO   = document.getElementById('art-data').value;
+  const docidVal  = document.getElementById('art-docid').value;
+
+  if (!titulo || !resumo || !conteudo || !dataISO) {
+    toast('Preencha título, resumo, conteúdo e data.', true); return;
+  }
+
+  const btn = document.getElementById('btn-salvar');
+  btn.disabled = true;
+  btn.textContent = 'Salvando…';
+
+  try {
+    // 1. Upload foto no Cloudinary (se houver arquivo novo)
+    let fotoUrl = document.getElementById('art-foto-url').value || '';
+    if (fotoArquivo) {
+      fotoUrl = await uploadCloudinary(fotoArquivo);
+    }
+
+    // 2. Monta objeto do artigo
+    const artigo = {
+      titulo:      titulo,
+      categoria:   document.getElementById('art-cat').value,
+      publicadoEm: dataISO,
+      data:        formatarData(dataISO),          // DD/MM/AAAA para exibição
+      resumo:      resumo,
+      foto:        fotoUrl,
+      conteudo:    textoParaHTML(conteudo),
+      atualizadoEm: new Date().toISOString(),
+    };
+
+    // 3. Salva no Firestore
+    const { doc, setDoc, addDoc, collection } = await import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js');
+    if (docidVal) {
+      await setDoc(doc(db, 'artigos', docidVal), artigo, { merge: true });
+      ARTIGOS_CACHE = ARTIGOS_CACHE.map(a => a._docid === docidVal ? { _docid: docidVal, ...artigo } : a);
+    } else {
+      const ref = await addDoc(collection(db, 'artigos'), artigo);
+      ARTIGOS_CACHE.push({ _docid: ref.id, ...artigo });
+    }
+
+    fecharModal();
+    renderBlog();
+    atualizarStats();
+
+    const isProg = new Date(dataISO + 'T00:00:00') > new Date();
+    toast(isProg ? '📅 Artigo programado para ' + formatarData(dataISO) : '✅ Artigo publicado!');
+  } catch(e) {
+    toast('Erro ao salvar: ' + e.message, true);
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<svg viewBox="0 0 24 24"><path d="M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4zm-5 16c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3zm3-10H5V5h10v4z"/></svg> Salvar no Firebase';
+  }
+}
+
+// ── CLOUDINARY UPLOAD ─────────────────────────────────────────
+function selecionarFoto(input) {
+  const file = input.files[0];
+  if (!file) return;
+  fotoArquivo = file;
+
+  // Preview local
+  const reader = new FileReader();
+  reader.onload = e => {
+    const prev = document.getElementById('foto-preview');
+    prev.src = e.target.result;
+    prev.classList.add('vis');
+  };
+  reader.readAsDataURL(file);
+}
+
+async function uploadCloudinary(file) {
+  const progress = document.getElementById('upload-progress');
+  const bar      = document.getElementById('upload-bar');
+  const status   = document.getElementById('upload-status');
+
+  progress.classList.add('vis');
+  status.classList.add('vis');
+  status.textContent = 'Enviando imagem para o Cloudinary…';
+
+  const fd = new FormData();
+  fd.append('file', file);
+  fd.append('upload_preset', CLOUDINARY_PRESET);
+  // Transformação automática: f_auto = formato ideal, q_auto = qualidade otimizada
+  fd.append('transformation', 'f_auto,q_auto,w_1200');
+
+  return new Promise((resolve, reject) => {
+    const xhr = new XMLHttpRequest();
+    xhr.open('POST', `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD}/image/upload`);
+
+    xhr.upload.onprogress = e => {
+      if (e.lengthComputable) {
+        const pct = Math.round((e.loaded / e.total) * 100);
+        bar.style.width = pct + '%';
+        status.textContent = `Enviando… ${pct}%`;
+      }
+    };
+
+    xhr.onload = () => {
+      if (xhr.status === 200) {
+        const res = JSON.parse(xhr.responseText);
+        // URL com transformação automática para carregamento rápido
+        const url = res.secure_url.replace('/upload/', '/upload/f_auto,q_auto,w_1200/');
+        status.textContent = '✅ Imagem enviada com sucesso!';
+        resolve(url);
+      } else {
+        reject(new Error('Cloudinary retornou status ' + xhr.status));
+      }
+    };
+
+    xhr.onerror = () => reject(new Error('Falha na conexão com Cloudinary'));
+    xhr.send(fd);
+  });
+}
+
+function resetUploadUI() {
+  document.getElementById('upload-progress').classList.remove('vis');
+  document.getElementById('upload-status').classList.remove('vis');
+  document.getElementById('upload-bar').style.width = '0';
+}
+
+// ── CONVERSÃO TEXTO → HTML ────────────────────────────────────
+function textoParaHTML(texto) {
+  const linhas = texto.split('\n');
+  let html = '', emLista = false;
+  for (let linha of linhas) {
+    linha = linha.trim();
+    if (!linha) { if (emLista) { html += '</ul>'; emLista = false; } continue; }
+    if (linha.startsWith('## ')) {
+      if (emLista) { html += '</ul>'; emLista = false; }
+      html += '<h3>' + linha.slice(3) + '</h3>';
+    } else if (linha.startsWith('- ') || linha.startsWith('* ')) {
+      if (!emLista) { html += '<ul>'; emLista = true; }
+      html += '<li>' + linha.slice(2) + '</li>';
+    } else {
+      if (emLista) { html += '</ul>'; emLista = false; }
+      html += '<p>' + linha + '</p>';
+    }
+  }
+  if (emLista) html += '</ul>';
+  return html;
+}
+
+function htmlParaTexto(html) {
+  return html
+    .replace(/<h3>(.*?)<\/h3>/g, '## $1\n')
+    .replace(/<ul>/g,'').replace(/<\/ul>/g,'\n')
+    .replace(/<li>(.*?)<\/li>/g,'- $1\n')
+    .replace(/<p>(.*?)<\/p>/g,'$1\n')
+    .replace(/<[^>]+>/g,'').trim();
+}
+
+// ── UTILS ─────────────────────────────────────────────────────
+function hojeISO() {
+  return new Date().toISOString().split('T')[0];
+}
+
+function aba(id) {
+  const titulos = { dashboard:'Dashboard', blog:'Blog' };
+  const subs    = { dashboard:'Visão geral', blog:'Gerencie os artigos' };
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  document.querySelectorAll('.nav-item')[['dashboard','blog'].indexOf(id)]?.classList.add('active');
+  document.getElementById('topbar-title').textContent = titulos[id] || id;
+  document.getElementById('topbar-sub').textContent   = subs[id] || '';
+  return false;
+}
+
+function toast(msg, isErro = false) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'toast' + (isErro ? ' erro' : '');
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// Drag & drop na área de upload
+const uploadArea = document.getElementById('foto-upload-area');
+uploadArea.addEventListener('dragover', e => { e.preventDefault(); uploadArea.classList.add('dragover'); });
+uploadArea.addEventListener('dragleave', () => uploadArea.classList.remove('dragover'));
+uploadArea.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadArea.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file && file.type.startsWith('image/')) {
+    fotoArquivo = file;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      const prev = document.getElementById('foto-preview');
+      prev.src = ev.target.result;
+      prev.classList.add('vis');
+    };
+    reader.readAsDataURL(file);
+  }
+});
+
+document.getElementById('modal-artigo').addEventListener('click', function(e) {
+  if (e.target === this) fecharModal();
+});
+</script>
+</body>
+</html>

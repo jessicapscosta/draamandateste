@@ -1,0 +1,947 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dra. Amanda Reis | Advocacia</title>
+  <link rel="icon" type="image/svg+xml" href="images/favicon.svg"/>
+  <link rel="icon" type="image/x-icon" href="images/favicon.ico"/>
+  <link rel="stylesheet" href="style.css"/>
+  <style>
+    /* ─── INDEX-SPECIFIC STYLES ─────────────────────── */
+
+    /* HERO */
+    .hero {
+      min-height: 100vh;
+      background: var(--light);
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      grid-template-rows: 1fr auto;
+      position: relative; overflow: hidden;
+      color: var(--dark);
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background: radial-gradient(ellipse 60% 70% at 50% 90%, rgba(45,6,27,.07) 0%, transparent 65%);
+    }
+
+    /* Coluna esquerda */
+    .hero-left {
+      grid-column: 1; grid-row: 1/3;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 9rem 1.5rem 3rem 0;
+      padding-left: 5vw;
+      position: relative; z-index: 2;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: .6rem;
+      background: rgba(45,6,27,.07); border: 1px solid rgba(45,6,27,.15);
+      border-radius: 50px; padding: .4rem 1rem;
+      font-size: .68rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.8rem; width: fit-content;
+      opacity: 0; animation: fadeUp .7s .3s forwards;
+    }
+    .hero-badge .dot {
+      width: 6px; height: 6px; background: var(--muted); border-radius: 50%;
+      animation: blink 1.5s infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.25} }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 4.5vw, 5rem);
+      font-weight: 900; line-height: 1.05; color: var(--dark);
+      margin-bottom: .4rem;
+      opacity: 0; animation: fadeUp .8s .45s forwards;
+    }
+    .hero-title .name-line { color: var(--muted); font-style: italic; display: block; }
+    .hero-oab {
+      font-size: .8rem; color: var(--muted); font-weight: 400; letter-spacing: .06em;
+      margin-bottom: 1.6rem;
+      opacity: 0; animation: fadeUp .7s .6s forwards;
+    }
+    .hero-desc {
+      font-size: .92rem; color: var(--muted); line-height: 1.8;
+      max-width: 380px; margin-bottom: 2.2rem; font-weight: 300;
+      opacity: 0; animation: fadeUp .7s .7s forwards;
+    }
+    .hero-btns {
+      display: flex; gap: .9rem; flex-wrap: wrap;
+      opacity: 0; animation: fadeUp .7s .85s forwards;
+    }
+    .btn-dark {
+      background: var(--dark); color: var(--light);
+      padding: .85rem 2rem; border-radius: 50px;
+      font-size: .8rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      text-decoration: none; cursor: none;
+      transition: opacity .3s, transform .3s;
+      display: inline-flex; align-items: center; gap: .5rem;
+    }
+    .btn-dark:hover { opacity: .85; transform: translateY(-3px); }
+    .btn-outline-dark {
+      border: 1.5px solid rgba(45,6,27,.25); color: var(--dark);
+      padding: .85rem 2rem; border-radius: 50px;
+      font-size: .8rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+      text-decoration: none; cursor: none;
+      transition: border-color .3s, background .3s, transform .3s;
+    }
+    .btn-outline-dark:hover { border-color: var(--muted); background: rgba(45,6,27,.05); transform: translateY(-3px); }
+
+    /* Coluna central - FOTO */
+    .hero-center {
+      grid-column: 2; grid-row: 1/3;
+      display: flex; align-items: flex-end; justify-content: center;
+      padding-top: 0;
+      position: relative; z-index: 2;
+      width: clamp(320px, 36vw, 560px);
+    }
+    .hero-photo { width: 100%; height: 100%; display: flex; align-items: flex-end; }
+    .hero-photo img {
+      width: 100%; max-height: 100vh;
+      object-fit: contain; object-position: bottom center;
+      filter: contrast(1.04);
+      animation: heroFloat 7s ease-in-out infinite alternate;
+      display: block;
+    }
+    @keyframes heroFloat { from{transform:translateY(0)} to{transform:translateY(-12px)} }
+
+    /* Coluna direita - ÁREAS */
+    .hero-right {
+      grid-column: 3; grid-row: 1/3;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 9rem 0 3rem 1.5rem;
+      padding-right: 5vw;
+      position: relative; z-index: 2;
+    }
+    .hero-areas-title {
+      font-size: .68rem; font-weight: 700; letter-spacing: .2em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: 1.4rem;
+      opacity: 0; animation: fadeUp .7s .5s forwards;
+    }
+    .hero-area-list {
+      list-style: none; display: flex; flex-direction: column; gap: .9rem;
+      opacity: 0; animation: fadeUp .8s .65s forwards;
+    }
+    .hero-area-item {
+      display: flex; align-items: center; gap: 1rem;
+      padding: .9rem 1.2rem;
+      background: rgba(45,6,27,.05); border: 1px solid rgba(45,6,27,.1);
+      border-radius: var(--r); cursor: none;
+      transition: background .3s, border-color .3s, transform .3s;
+      text-decoration: none; color: var(--dark);
+    }
+    .hero-area-item:hover {
+      background: rgba(45,6,27,.09); border-color: rgba(92,75,87,.35);
+      transform: translateX(-5px);
+    }
+    .area-icon-flat {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: var(--dark); border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .area-icon-flat svg { width: 20px; height: 20px; fill: var(--bege); }
+    .hero-area-item span.area-name { font-size: .85rem; font-weight: 500; color: var(--dark); }
+    .hero-area-arrow { margin-left: auto; color: var(--muted); font-size: .9rem; transition: transform .3s; }
+    .hero-area-item:hover .hero-area-arrow { transform: translateX(3px); }
+
+    /* Stats bar */
+    .hero-stats-bar {
+      grid-column: 1/4;
+      display: flex; align-items: center; justify-content: center;
+      background: var(--dark);
+      border-radius: var(--r-lg) var(--r-lg) 0 0;
+      padding: 1.8rem 5%;
+      opacity: 0; animation: fadeUp .8s 1.05s forwards;
+      position: relative; z-index: 2;
+    }
+    .hstat { text-align: center; padding: 0 3rem; flex: 1; }
+    .hstat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem; font-weight: 900; color: var(--bege); line-height: 1;
+    }
+    .hstat-label { font-size: .7rem; color: rgba(224,204,199,.6); letter-spacing: .06em; margin-top: .3rem; font-weight: 300; }
+    .hstat-sep { width: 1px; background: rgba(224,204,199,.15); height: 40px; flex-shrink: 0; }
+
+    /* SOBRE */
+    .about { background: var(--light); color: var(--dark); padding: 6rem 8%; }
+    .about-grid { display: grid; grid-template-columns: 1fr 1.1fr; gap: 6rem; align-items: center; }
+    .about-photo-wrap { position: relative; }
+    .about-photo-card {
+      border-radius: var(--r-lg); overflow: hidden;
+      box-shadow: 0 30px 70px rgba(45,6,27,.18); position: relative;
+    }
+    .about-photo-card img { width: 100%; display: block; filter: contrast(1.03); }
+    .float-badge {
+      position: absolute; bottom: -1rem; right: -1rem;
+      background: var(--dark); color: var(--light);
+      padding: 1.1rem 1.4rem; border-radius: var(--r);
+      text-align: center; box-shadow: 0 10px 30px rgba(45,6,27,.3); z-index: 5;
+      /* reset qualquer transform herdado do pai */
+      transform: none !important;
+      writing-mode: horizontal-tb;
+      text-orientation: mixed;
+    }
+    .float-badge .fb-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 900; color: var(--bege); display: block; line-height: 1.1;
+      transform: none !important;
+      writing-mode: horizontal-tb;
+    }
+    .float-badge .fb-label {
+      font-size: .68rem; font-weight: 400; opacity: .75; white-space: nowrap;
+      transform: none !important;
+      writing-mode: horizontal-tb;
+      display: block;
+    }
+    .about-corner {
+      position: absolute; top: -1.2rem; left: -1.2rem;
+      width: 70px; height: 70px;
+      border: 2px solid rgba(92,75,87,.3); border-radius: var(--r); z-index: 0;
+    }
+    .about h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.2vw, 2.9rem);
+      font-weight: 900; color: var(--dark); line-height: 1.1; margin-bottom: 1.3rem;
+    }
+    .about h2 em { font-style: italic; color: var(--muted); }
+    .about p { font-size: .93rem; color: var(--muted); line-height: 1.85; margin-bottom: 1rem; font-weight: 300; }
+    .cred-list { margin-top: 1.8rem; display: flex; flex-direction: column; gap: .8rem; }
+    .cred {
+      display: flex; align-items: center; gap: .9rem;
+      font-size: .83rem; color: var(--dark); font-weight: 400;
+    }
+    .cred-icon {
+      width: 36px; height: 36px; flex-shrink: 0;
+      background: rgba(45,6,27,.07); border: 1px solid rgba(92,75,87,.2);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    }
+    .cred-icon svg { width: 16px; height: 16px; fill: var(--dark); }
+
+    /* ÁREAS */
+    .areas { background: var(--dark); padding: 6rem 8%; }
+    .areas-header { margin-bottom: 3rem; }
+    .areas-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.2vw, 2.9rem); font-weight: 900; color: var(--light); margin-bottom: .5rem;
+    }
+    .areas-header p { font-size: .92rem; color: var(--bege); font-weight: 300; max-width: 480px; line-height: 1.7; opacity: .8; }
+    .areas-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px,1fr)); gap: 1.2rem; }
+    .area-card {
+      background: rgba(255,255,255,.04); border: 1px solid rgba(224,204,199,.12);
+      border-radius: var(--r); padding: 1.8rem 1.5rem;
+      position: relative; overflow: hidden; cursor: none;
+      text-decoration: none;
+      display: block;
+      transition: transform .4s, background .4s, border-color .4s;
+    }
+    .area-card:hover { transform: translateY(-8px); background: rgba(224,204,199,.07); border-color: rgba(224,204,199,.3); }
+    .area-card-num {
+      position: absolute; top: 1rem; right: 1.2rem;
+      font-family: 'Playfair Display', serif; font-size: 4rem; font-weight: 900;
+      color: rgba(224,204,199,.05); line-height: 1; pointer-events: none;
+    }
+    .area-icon-box {
+      width: 48px; height: 48px;
+      background: rgba(224,204,199,.1); border: 1px solid rgba(224,204,199,.2);
+      border-radius: 12px; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.2rem; transition: background .3s, transform .3s;
+    }
+    .area-card:hover .area-icon-box { background: rgba(224,204,199,.18); transform: scale(1.08); }
+    .area-icon-box svg { width: 22px; height: 22px; fill: var(--bege); }
+    .area-card h3 {
+      font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700;
+      color: var(--light); margin-bottom: .6rem;
+    }
+    .area-card p { font-size: .8rem; color: var(--bege); line-height: 1.75; font-weight: 300; opacity: .8; }
+    .area-cta {
+      display: inline-flex; align-items: center; gap: .4rem;
+      margin-top: 1rem; font-size: .72rem; font-weight: 600;
+      letter-spacing: .1em; text-transform: uppercase; color: var(--bege); opacity: .7;
+      transition: opacity .3s;
+    }
+    .area-card:hover .area-cta { opacity: 1; }
+
+    /* QUOTE / DIFERENCIAIS */
+    .quote-section { background: var(--dark2); padding: 6rem 8%; }
+    .quote-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: center; }
+    .quote-photo-wrap {
+      position: relative; border-radius: var(--r-lg); overflow: hidden;
+      background: rgba(255,255,255,.03);
+      display: flex; align-items: flex-end; justify-content: center;
+      min-height: 520px;
+    }
+    .quote-photo-wrap img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center top;
+      display: block; border-radius: var(--r-lg);
+    }
+    .quote-photo-overlay {
+      position: absolute; bottom: 0; left: 0; right: 0; height: 120px;
+      background: linear-gradient(to top, var(--dark2), transparent);
+    }
+    .quote-icon {
+      width: 52px; height: 52px;
+      background: rgba(224,204,199,.1); border: 1px solid rgba(224,204,199,.2);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+      margin-bottom: 1.5rem;
+    }
+    .quote-icon svg { width: 24px; height: 24px; fill: var(--bege); }
+    .quote-content blockquote {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.1rem, 1.8vw, 1.4rem); font-style: italic;
+      color: var(--light); line-height: 1.75; margin-bottom: 2rem;
+    }
+    .quote-content cite {
+      font-size: .75rem; font-weight: 700; letter-spacing: .15em; text-transform: uppercase;
+      color: var(--bege); font-style: normal; display: block;
+    }
+    .quote-line {
+      width: 50px; height: 2px; background: var(--bege); border-radius: 1px; margin-top: .5rem;
+      animation: lineGrow 2.8s ease-in-out infinite alternate;
+    }
+    @keyframes lineGrow { from{width:50px} to{width:95px} }
+    .quote-why-items { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1rem; }
+    .qwhy {
+      display: flex; gap: 1rem; align-items: flex-start;
+      padding: 1rem 1.2rem;
+      background: rgba(255,255,255,.04); border: 1px solid rgba(224,204,199,.1);
+      border-radius: var(--r);
+      transition: background .3s, border-color .3s, transform .3s;
+    }
+    .qwhy:hover { background: rgba(224,204,199,.07); border-color: rgba(224,204,199,.25); transform: translateX(6px); }
+    .qwhy-icon {
+      width: 40px; height: 40px; flex-shrink: 0;
+      background: rgba(224,204,199,.1); border: 1px solid rgba(224,204,199,.2);
+      border-radius: 10px; display: flex; align-items: center; justify-content: center;
+    }
+    .qwhy-icon svg { width: 18px; height: 18px; fill: var(--bege); }
+    .qwhy h4 { font-size: .88rem; font-weight: 600; color: var(--light); margin-bottom: .2rem; }
+    .qwhy p { font-size: .78rem; color: var(--bege); line-height: 1.65; font-weight: 300; opacity: .8; }
+
+    /* DEPOIMENTOS */
+    .testimonials { background: var(--dark); padding: 6rem 8%; }
+    .testimonials h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; color: var(--light); margin-bottom: .4rem;
+    }
+    .test-lead { font-size: .9rem; color: var(--bege); font-weight: 300; margin-bottom: 2.8rem; opacity: .8; }
+    .test-wrap { overflow: hidden; margin: 0 -8%; }
+    .test-track {
+      display: flex; gap: 1.2rem; width: max-content;
+      animation: testScroll 32s linear infinite;
+    }
+    .test-track:hover { animation-play-state: paused; }
+    @keyframes testScroll { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+    .test-card {
+      background: rgba(255,255,255,.05); border: 1px solid rgba(224,204,199,.12);
+      border-radius: var(--r); padding: 1.8rem; width: 295px; flex-shrink: 0;
+      transition: border-color .3s, background .3s;
+    }
+    .test-card:hover { border-color: rgba(224,204,199,.35); background: rgba(224,204,199,.06); }
+    .stars { color: var(--bege); font-size: .8rem; letter-spacing: 2px; margin-bottom: .7rem; }
+    .test-card p { font-size: .82rem; color: var(--bege); line-height: 1.8; font-style: italic; margin-bottom: 1rem; font-weight: 300; opacity: .85; }
+    .test-author { font-size: .78rem; font-weight: 700; color: var(--light); }
+    .test-role { font-size: .7rem; color: var(--bege); font-weight: 300; opacity: .7; margin-top: .1rem; }
+
+    /* CTA */
+    .cta-section { background: var(--light); padding: 6rem 8%; }
+    .cta-inner {
+      background: var(--dark); border-radius: var(--r-lg);
+      padding: 5.5rem 4rem; text-align: center;
+      position: relative; overflow: hidden;
+    }
+    .cta-glow {
+      position: absolute; bottom: -120px; left: 50%; transform: translateX(-50%);
+      width: 500px; height: 250px;
+      background: rgba(92,75,87,.25); border-radius: 50%; filter: blur(80px);
+      animation: glowPulse 4s ease-in-out infinite alternate;
+    }
+    @keyframes glowPulse { from{opacity:.4} to{opacity:.9} }
+    .cta-inner h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 3.5vw, 3.2rem); font-weight: 900; color: var(--light);
+      margin-bottom: 1rem; position: relative;
+    }
+    .cta-inner h2 em { font-style: italic; color: var(--bege); }
+    .cta-inner > p {
+      font-size: .92rem; color: var(--bege);
+      max-width: 500px; margin: 0 auto 3rem;
+      line-height: 1.75; font-weight: 300; opacity: .85; position: relative;
+    }
+    .cta-btns {
+      display: flex; gap: 1.2rem; justify-content: center;
+      flex-wrap: wrap; position: relative;
+      margin-bottom: 2rem;             /* ← espaçamento antes do telefone */
+    }
+    .btn-wa {
+      background: #25D366; color: #fff;
+      padding: 1.1rem 2.8rem; border-radius: 50px;
+      font-size: .85rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      text-decoration: none; cursor: none;
+      display: inline-flex; align-items: center; gap: .6rem;
+      transition: opacity .3s, transform .3s;
+    }
+    .btn-wa:hover { opacity: .9; transform: translateY(-3px); }
+    .btn-wa svg { width: 18px; height: 18px; fill: #fff; flex-shrink: 0; }
+    .btn-light {
+      border: 1.5px solid rgba(243,239,236,.25); color: var(--light);
+      padding: 1.1rem 2.8rem; border-radius: 50px;
+      font-size: .85rem; font-weight: 500; letter-spacing: .08em; text-transform: uppercase;
+      text-decoration: none; cursor: none;
+      transition: border-color .3s, background .3s, transform .3s;
+    }
+    .btn-light:hover { border-color: var(--bege); background: rgba(224,204,199,.08); transform: translateY(-3px); }
+    .cta-contact {
+      font-size: .82rem; color: rgba(224,204,199,.45);
+      position: relative; line-height: 1.9;
+    }
+
+    /* ── BLOG ──────────────────────────────────────── */
+    .blog-section { background: var(--light); padding: 6rem 8%; color: var(--dark); }
+    .blog-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.8rem; flex-wrap: wrap; gap: 1rem; }
+    .blog-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem); font-weight: 900; color: var(--dark);
+    }
+    .blog-header h2 em { font-style: italic; color: var(--muted); }
+    .blog-ver-mais {
+      display: inline-flex; align-items: center; gap: .5rem;
+      font-size: .75rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+      color: var(--muted); text-decoration: none; cursor: none;
+      border-bottom: 1.5px solid rgba(92,75,87,.3);
+      padding-bottom: 2px;
+      transition: color .3s, border-color .3s;
+    }
+    .blog-ver-mais:hover { color: var(--dark); border-color: var(--dark); }
+    .blog-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+    .blog-card {
+      background: #fff; border: 1px solid rgba(45,6,27,.1);
+      border-radius: var(--r-lg); overflow: hidden; cursor: none;
+      text-decoration: none; color: var(--dark);
+      transition: transform .35s, box-shadow .35s, border-color .35s;
+      display: flex; flex-direction: column;
+    }
+    .blog-card:hover { transform: translateY(-6px); box-shadow: 0 20px 50px rgba(45,6,27,.12); border-color: rgba(92,75,87,.3); }
+    .blog-card-img {
+      width: 100%; aspect-ratio: 16/9; object-fit: cover;
+      display: block; background: var(--bege);
+    }
+    .blog-card-img-placeholder {
+      width: 100%; aspect-ratio: 16/9;
+      background: linear-gradient(135deg, var(--bege) 0%, var(--light) 100%);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .blog-card-img-placeholder svg { width: 40px; height: 40px; fill: rgba(92,75,87,.3); }
+    .blog-card-body { padding: 1.5rem; flex: 1; display: flex; flex-direction: column; }
+    .blog-card-tag {
+      font-size: .64rem; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+      color: var(--muted); margin-bottom: .7rem;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .blog-card-tag::before { content: ''; display: block; width: 16px; height: 2px; background: var(--muted); border-radius: 1px; }
+    .blog-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 700; color: var(--dark);
+      line-height: 1.35; margin-bottom: .7rem;
+    }
+    .blog-card p { font-size: .82rem; color: var(--muted); line-height: 1.7; font-weight: 300; flex: 1; }
+    .blog-card-footer {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-top: 1.2rem; padding-top: 1rem;
+      border-top: 1px solid rgba(45,6,27,.08);
+    }
+    .blog-card-date { font-size: .7rem; color: var(--muted); font-weight: 300; opacity: .7; }
+    .blog-card-link {
+      font-size: .72rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase;
+      color: var(--dark); opacity: .6;
+      transition: opacity .3s;
+    }
+    .blog-card:hover .blog-card-link { opacity: 1; }
+
+    @media (max-width: 900px) {
+      .blog-section { padding: 4rem 6%; }
+      .blog-grid { grid-template-columns: 1fr; gap: 1.2rem; }
+      .blog-header { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ── BLOG MOBILE ── */
+    @media (max-width: 600px) {
+      .blog-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 900px) {
+
+      /* NAV */
+      nav { padding: .9rem 5%; }
+      .nav-links { display: none; }
+      .nav-logo img { height: 36px; }
+
+      /* HERO: empilha tudo em coluna única */
+      .hero {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        min-height: auto;
+      }
+      .hero-left {
+        grid-column: 1; grid-row: 1;
+        padding: 7rem 6% 1.5rem;
+      }
+      .hero-title { font-size: clamp(2.4rem, 10vw, 3.5rem); }
+      .hero-desc { max-width: 100%; }
+
+      /* Botões empilhados e sem corte */
+      .hero-btns {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: .75rem;
+      }
+      .btn-dark, .btn-outline-dark {
+        width: 100%;
+        max-width: 320px;
+        justify-content: center;
+        text-align: center;
+      }
+
+      /* Foto centralizada e maior */
+      .hero-center {
+        grid-column: 1; grid-row: 2;
+        width: 85%;
+        max-width: 340px;
+        margin: 0 auto;
+        padding-top: 1rem;
+        min-height: 320px;
+      }
+      .hero-photo img {
+        max-height: 55vh;
+        object-position: top center;
+      }
+
+      /* Áreas: sem corte, largura total */
+      .hero-right {
+        grid-column: 1; grid-row: 3;
+        padding: 1.5rem 6% 2rem;
+      }
+      .hero-area-list { gap: .7rem; }
+      .hero-area-item {
+        padding: .85rem 1rem;
+        /* impede que a seta corte o texto */
+        min-width: 0;
+      }
+      .hero-area-item span.area-name {
+        font-size: .82rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        flex: 1;
+        min-width: 0;
+      }
+
+      /* Stats bar: wrap em 2 colunas no mobile */
+      .hero-stats-bar {
+        grid-column: 1; grid-row: 4;
+        border-radius: 0;
+        flex-wrap: wrap;
+        gap: 1.2rem;
+        padding: 1.8rem 6%;
+        justify-content: center;
+      }
+      .hstat { padding: .5rem 1.5rem; flex: 1 1 40%; min-width: 100px; }
+      .hstat-sep { display: none; }
+      .hstat-num { font-size: 1.8rem; }
+
+      /* SOBRE */
+      .about { padding: 4rem 6%; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-photo-wrap { max-width: 320px; margin: 0 auto; }
+      .float-badge { bottom: -.5rem; right: -.5rem; padding: .9rem 1.1rem; }
+      .float-badge .fb-num { font-size: 1.4rem; }
+
+      /* ÁREAS */
+      .areas { padding: 4rem 6%; }
+      .areas-grid { grid-template-columns: 1fr; gap: 1rem; }
+
+      /* DIFERENCIAIS */
+      .quote-section { padding: 4rem 6%; }
+      .quote-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .quote-photo-wrap { min-height: 300px; }
+
+      /* DEPOIMENTOS */
+      .testimonials { padding: 4rem 6%; }
+
+      /* CTA */
+      .cta-section { padding: 4rem 6%; }
+      .cta-inner { padding: 3rem 1.5rem; }
+      .cta-btns { flex-direction: column; align-items: center; gap: .85rem; }
+      .btn-wa, .btn-light {
+        width: 100%; max-width: 300px;
+        justify-content: center; text-align: center;
+      }
+    }
+
+    /* Telas muito pequenas */
+    @media (max-width: 380px) {
+      .hero-title { font-size: 2.1rem; }
+      .hero-center { width: 90%; }
+      .hstat { flex: 1 1 100%; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <div class="nav-logo">
+    <img src="images/logo.png" alt="Amanda Reis Advocacia"/>
+  </div>
+  <ul class="nav-links">
+    <li><a href="#sobre">Sobre</a></li>
+    <li><a href="#atuacao">Atuação</a></li>
+    <li><a href="#diferenciais">Diferenciais</a></li>
+    <li><a href="#contato" class="nav-cta">Fale Conosco</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-bg"></div>
+
+  <div class="hero-left">
+    <div class="hero-badge"><div class="dot"></div> Advocacia &amp; Consultoria Jurídica</div>
+    <h1 class="hero-title">
+      Dra. Amanda<br>
+      <em class="name-line">Reis</em>
+    </h1>
+    <p class="hero-oab">OAB/DF · Advogada Previdencialista, Trabalhista e Civilista</p>
+    <p class="hero-desc">Defesa dos seus direitos com estratégia, rigor técnico e comprometimento. Mais de 15 anos transformando causas em conquistas reais.</p>
+    <div class="hero-btns">
+      <a href="https://wa.me/5561999284025" class="btn-dark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        Agendar Consulta
+      </a>
+      <a href="#sobre" class="btn-outline-dark">Conheça a Dra.</a>
+    </div>
+  </div>
+
+  <div class="hero-center">
+    <div class="hero-photo">
+      <img src="images/foto_hero.png" alt="Dra. Amanda Reis"/>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <p class="hero-areas-title">Áreas de Atuação</p>
+    <ul class="hero-area-list">
+      <li>
+        <a href="areas/previdenciario.html" class="hero-area-item">
+          <div class="area-icon-flat">
+            <svg viewBox="0 0 24 24"><path d="M12 2a1 1 0 0 1 1 1v1h5l2 5-2 5H13v2h2a1 1 0 0 1 0 2h-2v1a1 1 0 0 1-2 0v-1H9a1 1 0 0 1 0-2h2v-2H6L4 9l2-5h5V3a1 1 0 0 1 1-1zm5.83 3H13v8h4.83L19.72 9 17.83 5zM6.17 5 4.28 9l1.89 4H11V5H6.17z"/></svg>
+          </div>
+          <span class="area-name">Direito Previdenciário</span>
+          <span class="hero-area-arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="areas/trabalhista.html" class="hero-area-item">
+          <div class="area-icon-flat">
+            <svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15h8v2H8v-2zm0-4h8v2H8v-2z"/></svg>
+          </div>
+          <span class="area-name">Direito Trabalhista</span>
+          <span class="hero-area-arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="areas/familia.html" class="hero-area-item">
+          <div class="area-icon-flat">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+          </div>
+          <span class="area-name">Direito da Família</span>
+          <span class="hero-area-arrow">→</span>
+        </a>
+      </li>
+      <li>
+        <a href="areas/eleitoral.html" class="hero-area-item">
+          <div class="area-icon-flat">
+            <svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg>
+          </div>
+          <span class="area-name">Direito Eleitoral</span>
+          <span class="hero-area-arrow">→</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="hero-stats-bar">
+    <div class="hstat"><div class="hstat-num">+15</div><div class="hstat-label">Anos de Atuação</div></div>
+    <div class="hstat-sep"></div>
+    <div class="hstat"><div class="hstat-num">+500</div><div class="hstat-label">Clientes Atendidos</div></div>
+    <div class="hstat-sep"></div>
+    <div class="hstat"><div class="hstat-num">4</div><div class="hstat-label">Pós-Graduações</div></div>
+    <div class="hstat-sep"></div>
+    <div class="hstat"><div class="hstat-num">98%</div><div class="hstat-label">Taxa de Satisfação</div></div>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<div class="marquee-strip">
+  <div class="marquee-inner">
+    <span class="marquee-item">Direito Previdenciário</span>
+    <span class="marquee-item">Direito Trabalhista</span>
+    <span class="marquee-item">Direito da Família</span>
+    <span class="marquee-item">Direito Eleitoral</span>
+    <span class="marquee-item">Consultoria Jurídica</span>
+    <span class="marquee-item">Advocacia Especializada</span>
+    <span class="marquee-item">Distrito Federal</span>
+    <span class="marquee-item">Goiás</span>
+    <span class="marquee-item">Direito Previdenciário</span>
+    <span class="marquee-item">Direito Trabalhista</span>
+    <span class="marquee-item">Direito da Família</span>
+    <span class="marquee-item">Direito Eleitoral</span>
+    <span class="marquee-item">Consultoria Jurídica</span>
+    <span class="marquee-item">Advocacia Especializada</span>
+    <span class="marquee-item">Distrito Federal</span>
+    <span class="marquee-item">Goiás</span>
+  </div>
+</div>
+
+<!-- SOBRE -->
+<section class="about" id="sobre">
+  <div class="about-grid">
+    <div class="about-photo-wrap reveal-l">
+      <div class="about-corner"></div>
+      <div class="about-photo-card">
+        <img src="images/foto_sobre.png" alt="Dra. Amanda Reis"/>
+      </div>
+      <div class="float-badge">
+        <span class="fb-num">+15</span>
+        <span class="fb-label">Anos de Experiência</span>
+      </div>
+    </div>
+    <div class="reveal-r">
+      <div class="section-tag" style="color:var(--muted)">
+        <span class="stag-line" style="background:var(--muted)"></span>Sobre a Advogada
+      </div>
+      <h2>Quem é a Dra.<br><em>Amanda Reis?</em></h2>
+      <p>Advogada Previdencialista, Civilista e Trabalhista, fundadora do escritório <strong>Amanda Reis Advocacia</strong>. Com atendimento humanizado e técnica apurada, coloca seus clientes no centro de cada decisão.</p>
+      <p>Pós-graduada em Direito Público, Direito do Trabalho e Processo do Trabalho, Direito Previdenciário — e cursando Pós-graduação em Direito Eleitoral e Direito de Família e Sucessões.</p>
+      <div class="cred-list">
+        <div class="cred">
+          <div class="cred-icon"><svg viewBox="0 0 24 24"><path d="M12 3L1 9l4 2.18V17a1 1 0 0 0 .55.89l6 3a1 1 0 0 0 .9 0l6-3A1 1 0 0 0 19 17v-5.82L21 10v7h2V9L12 3zm5 13.26-5 2.5-5-2.5V12.36l5 2.73 5-2.73v3.9z"/></svg></div>
+          Atuação perante os Tribunais Regionais do Trabalho
+        </div>
+        <div class="cred">
+          <div class="cred-icon"><svg viewBox="0 0 24 24"><path d="M9 21c0 .55.45 1 1 1h4c.55 0 1-.45 1-1v-1H9v1zm3-19C8.14 2 5 5.14 5 9c0 2.38 1.19 4.47 3 5.74V17c0 .55.45 1 1 1h6c.55 0 1-.45 1-1v-2.26C17.81 13.47 19 11.38 19 9c0-3.86-3.14-7-7-7z"/></svg></div>
+          Especialista em ações e defesas previdenciárias
+        </div>
+        <div class="cred">
+          <div class="cred-icon"><svg viewBox="0 0 24 24"><path d="M20 4H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 14H4V6h16v12zM6 10h2v2H6v-2zm0 4h8v2H6v-2zm10 0h2v2h-2v-2zm-6-4h8v2h-8v-2z"/></svg></div>
+          Atendimento presencial e online em todo o Brasil
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ÁREAS -->
+<section class="areas" id="atuacao">
+  <div class="areas-header reveal">
+    <div class="section-tag" style="color:var(--bege)">
+      <span class="stag-line" style="background:var(--bege)"></span>Especialidades
+    </div>
+    <h2>Áreas de Atuação</h2>
+    <p>Representação jurídica especializada com estratégia personalizada e comprometimento em cada caso.</p>
+  </div>
+  <div class="areas-grid">
+    <a href="areas/previdenciario.html" class="area-card reveal">
+      <div class="area-card-num">01</div>
+      <div class="area-icon-box"><svg viewBox="0 0 24 24"><path d="M12 2a1 1 0 0 1 1 1v1h5l2 5-2 5H13v2h2a1 1 0 0 1 0 2h-2v1a1 1 0 0 1-2 0v-1H9a1 1 0 0 1 0-2h2v-2H6L4 9l2-5h5V3a1 1 0 0 1 1-1zm5.83 3H13v8h4.83L19.72 9 17.83 5zM6.17 5 4.28 9l1.89 4H11V5H6.17z"/></svg></div>
+      <h3>Direito Previdenciário</h3>
+      <p>Aposentadorias, benefícios por incapacidade, revisão de benefícios, BPC/LOAS e ações judiciais contra o INSS.</p>
+      <span class="area-cta">Ver mais →</span>
+    </a>
+    <a href="areas/trabalhista.html" class="area-card reveal" style="transition-delay:.1s">
+      <div class="area-card-num">02</div>
+      <div class="area-icon-box"><svg viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8l-6-6zm4 18H6V4h7v5h5v11zM8 15h8v2H8v-2zm0-4h8v2H8v-2z"/></svg></div>
+      <h3>Direito Trabalhista</h3>
+      <p>Reclamações trabalhistas, horas extras, assédio moral, demissões irregulares e atuação nos TRTs.</p>
+      <span class="area-cta">Ver mais →</span>
+    </a>
+    <a href="areas/familia.html" class="area-card reveal" style="transition-delay:.2s">
+      <div class="area-card-num">03</div>
+      <div class="area-icon-box"><svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg></div>
+      <h3>Direito da Família</h3>
+      <p>Divórcio, guarda de filhos, pensão alimentícia, inventários e planejamento sucessório.</p>
+      <span class="area-cta">Ver mais →</span>
+    </a>
+    <a href="areas/eleitoral.html" class="area-card reveal" style="transition-delay:.3s">
+      <div class="area-card-num">04</div>
+      <div class="area-icon-box"><svg viewBox="0 0 24 24"><path d="M17 12h-5v5h5v-5zM16 1v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2h-1V1h-2zm3 18H5V8h14v11z"/></svg></div>
+      <h3>Direito Eleitoral</h3>
+      <p>Consultoria e defesa em processos eleitorais, candidaturas, propaganda eleitoral e impugnações.</p>
+      <span class="area-cta">Ver mais →</span>
+    </a>
+  </div>
+</section>
+
+<!-- DIFERENCIAIS + QUOTE -->
+<section class="quote-section" id="diferenciais">
+  <div class="quote-grid">
+    <div class="reveal-l">
+      <div class="quote-photo-wrap">
+        <img src="images/foto_depoimento.png" alt="Dra. Amanda Reis"/>
+        <div class="quote-photo-overlay"></div>
+      </div>
+    </div>
+    <div class="reveal-r">
+      <div class="section-tag" style="color:var(--bege)">
+        <span class="stag-line" style="background:var(--bege)"></span>Diferenciais
+      </div>
+      <div class="quote-icon">
+        <svg viewBox="0 0 24 24"><path d="M6 17h3l2-4V7H5v6h3zm8 0h3l2-4V7h-6v6h3z"/></svg>
+      </div>
+      <blockquote>"Meu compromisso é garantir que cada cliente tenha acesso à justiça com a dignidade e o rigor que merece. Seu direito é a minha missão."</blockquote>
+      <cite>Dra. Amanda Reis</cite>
+      <div class="quote-line"></div>
+      <div class="quote-why-items">
+        <div class="qwhy">
+          <div class="qwhy-icon"><svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z"/></svg></div>
+          <div><h4>Estratégia Personalizada</h4><p>Cada caso recebe atenção individual com estratégia desenvolvida exclusivamente para sua situação.</p></div>
+        </div>
+        <div class="qwhy">
+          <div class="qwhy-icon"><svg viewBox="0 0 24 24"><path d="M9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2zm2-7h-1V2h-2v2H8V2H6v2H5c-1.11 0-1.99.9-1.99 2L3 20a2 2 0 0 0 2 2h14c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 16H5V9h14v11z"/></svg></div>
+          <div><h4>Comunicação Transparente</h4><p>Você acompanha cada etapa sem jargões, com total clareza e transparência.</p></div>
+        </div>
+        <div class="qwhy">
+          <div class="qwhy-icon"><svg viewBox="0 0 24 24"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 4l5 2.18V11c0 3.5-2.33 6.79-5 7.93-2.67-1.14-5-4.43-5-7.93V7.18L12 5z"/></svg></div>
+          <div><h4>Comprometimento Ético</h4><p>Atuação pautada em integridade, responsabilidade e dedicação irrestrita à defesa dos seus direitos.</p></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="testimonials">
+  <div class="section-tag reveal" style="color:var(--bege)">
+    <span class="stag-line" style="background:var(--bege)"></span>Depoimentos
+  </div>
+  <h2 class="reveal">O que dizem <em style="font-style:italic;color:var(--bege)">nossos clientes</em></h2>
+  <p class="test-lead reveal">Mais de 500 clientes atendidos com excelência e dedicação</p>
+  <div class="test-wrap">
+    <div class="test-track">
+      <div class="test-card"><div class="stars">★★★★★</div><p>"A Dra. Amanda conseguiu minha aposentadoria depois de anos de luta com o INSS. Profissional impecável e atenciosa!"</p><div class="test-author">Maria Aparecida S.</div><div class="test-role">Direito Previdenciário</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"Fui demitida de forma irregular e ela batalhou pelos meus direitos. Ganhei a causa e recebi tudo que era meu!"</p><div class="test-author">Carla M.</div><div class="test-role">Direito Trabalhista</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"Divórcio resolvido com muita humanidade e eficiência. Recomendo a todos que precisam de uma advogada de confiança."</p><div class="test-author">João P. F.</div><div class="test-role">Direito da Família</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"Resolveu meu caso previdenciário rapidamente e com total transparência. Muito grata pela dedicação!"</p><div class="test-author">Rosângela T.</div><div class="test-role">Direito Previdenciário</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"Ação trabalhista complexa com resultado excelente. Atendimento diferenciado do início ao fim."</p><div class="test-author">Fernando A.</div><div class="test-role">Direito Trabalhista</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"A Dra. Amanda conseguiu minha aposentadoria depois de anos de luta com o INSS. Profissional impecável e atenciosa!"</p><div class="test-author">Maria Aparecida S.</div><div class="test-role">Direito Previdenciário</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"Fui demitida de forma irregular e ela batalhou pelos meus direitos. Ganhei a causa e recebi tudo que era meu!"</p><div class="test-author">Carla M.</div><div class="test-role">Direito Trabalhista</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"Divórcio resolvido com muita humanidade e eficiência. Recomendo a todos que precisam de uma advogada de confiança."</p><div class="test-author">João P. F.</div><div class="test-role">Direito da Família</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"Resolveu meu caso previdenciário rapidamente e com total transparência. Muito grata pela dedicação!"</p><div class="test-author">Rosângela T.</div><div class="test-role">Direito Previdenciário</div></div>
+      <div class="test-card"><div class="stars">★★★★★</div><p>"Ação trabalhista complexa com resultado excelente. Atendimento diferenciado do início ao fim."</p><div class="test-author">Fernando A.</div><div class="test-role">Direito Trabalhista</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG -->
+<section class="blog-section" id="blog">
+  <div class="blog-header reveal">
+    <div>
+      <div class="section-tag" style="color:var(--muted)">
+        <span class="stag-line" style="background:var(--muted)"></span>Conteúdo Jurídico
+      </div>
+      <h2>Artigos e <em>Publicações</em></h2>
+    </div>
+    <a href="blog/index.html" class="blog-ver-mais">Ver todos os artigos →</a>
+  </div>
+
+  <!-- Os 3 últimos artigos são carregados aqui via JS a partir de blog/artigos.js -->
+  <div class="blog-grid" id="blog-grid-home">
+    <!-- preenchido por blog/artigos.js -->
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contato">
+  <div class="cta-inner">
+    <div class="cta-glow"></div>
+    <h2>Seus direitos merecem a<br><em>melhor defesa</em></h2>
+    <p>Agende uma consulta e dê o primeiro passo para garantir o que é seu. Atendimento presencial no Distrito Federal e Goiás, e online para todo o Brasil.</p>
+    <div class="cta-btns">
+      <a href="https://wa.me/5561999284025" class="btn-wa">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        WhatsApp
+      </a>
+      <a href="mailto:contato@draamandareis.com.br" class="btn-light">Enviar E-mail</a>
+    </div>
+    <p class="cta-contact">
+      (61) 99928-4025<br>
+      contato@draamandareis.com.br<br>
+      Brasília/DF · Goiás · Online para todo o Brasil
+    </p>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><img src="images/logo.png" alt="Amanda Reis Advocacia"/></div>
+    <p class="footer-copy">© 2025 Amanda Reis Advocacia. Todos os direitos reservados. <a href="admin/" style="color:rgba(224,204,199,.15);font-size:.65rem;text-decoration:none" title="admin">·</a></p>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/advamandareis/">Instagram</a>
+      <a href="https://wa.me/5561999284025">WhatsApp</a>
+      <a href="https://www.draamandareis.com.br">Site Oficial</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+  const cur=document.getElementById('cursor'),curR=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(anim);})();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.8)';cur.style.background='rgba(224,204,199,.35)';});
+    el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.background='var(--bege)';});
+  });
+  const nav=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+  const obs=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('vis');obs.unobserve(e.target);}}),{threshold:.12});
+  document.querySelectorAll('.reveal,.reveal-l,.reveal-r').forEach(el=>obs.observe(el));
+
+  // ── BLOG: carrega os 3 últimos artigos ──────────────
+  (function() {
+    const s = document.createElement('script');
+    s.src = 'blog/artigos.js';
+    s.onload = function() {
+      const grid = document.getElementById('blog-grid-home');
+      if (!grid || !window.ARTIGOS || !window.ARTIGOS.length) {
+        if(grid) grid.innerHTML = '<p style="color:var(--muted);font-size:.9rem;grid-column:1/-1;opacity:.6">Nenhum artigo publicado ainda.</p>';
+        return;
+      }
+      const ultimos = [...window.ARTIGOS].reverse().slice(0, 3);
+      grid.innerHTML = ultimos.map(a => `
+        <a href="blog/artigo.html?id=${a.id}" class="blog-card reveal">
+          ${a.foto
+            ? `<img class="blog-card-img" src="../${a.foto}" alt="${a.titulo}"/>`
+            : `<div class="blog-card-img-placeholder"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div>`
+          }
+          <div class="blog-card-body">
+            <div class="blog-card-tag">${a.categoria || 'Artigo'}</div>
+            <h3>${a.titulo}</h3>
+            <p>${a.resumo}</p>
+            <div class="blog-card-footer">
+              <span class="blog-card-date">${a.data}</span>
+              <span class="blog-card-link">Ler mais →</span>
+            </div>
+          </div>
+        </a>
+      `).join('');
+      grid.querySelectorAll('.reveal').forEach(el => obs.observe(el));
+    };
+    document.body.appendChild(s);
+  })();
+</script>
+</body>
+</html>

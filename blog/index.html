@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Blog Jurídico | Amanda Reis Advocacia</title>
+  <link rel="icon" type="image/svg+xml" href="../images/favicon.svg"/>
+  <link rel="icon" type="image/x-icon" href="../images/favicon.ico"/>
+  <link rel="stylesheet" href="../style.css"/>
+  <style>
+    .blog-hero{background:var(--dark);padding:9rem 8% 5rem;position:relative;overflow:hidden}
+    .blog-hero-glow{position:absolute;top:-80px;right:-80px;width:400px;height:400px;background:rgba(92,75,87,.2);border-radius:50%;filter:blur(90px);pointer-events:none}
+    .blog-hero .back-link{display:inline-flex;align-items:center;gap:.5rem;color:var(--bege);text-decoration:none;font-size:.75rem;font-weight:600;letter-spacing:.1em;text-transform:uppercase;margin-bottom:2rem;opacity:.7;transition:opacity .3s;cursor:none}
+    .blog-hero .back-link:hover{opacity:1}
+    .blog-hero h1{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4rem);font-weight:900;color:var(--light);line-height:1.05;position:relative}
+    .blog-hero h1 em{font-style:italic;color:var(--bege)}
+    .blog-hero p{font-size:.95rem;color:var(--bege);font-weight:300;opacity:.8;margin-top:.8rem;max-width:500px;line-height:1.7;position:relative}
+    .blog-filters{background:var(--light);padding:2rem 8%;border-bottom:1px solid rgba(45,6,27,.08);display:flex;gap:.75rem;flex-wrap:wrap;align-items:center}
+    .filter-label{font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);margin-right:.5rem}
+    .filter-btn{padding:.45rem 1.1rem;border-radius:50px;border:1.5px solid rgba(45,6,27,.18);background:transparent;font-size:.73rem;font-weight:600;color:var(--muted);cursor:none;font-family:'Poppins',sans-serif;letter-spacing:.05em;transition:background .25s,border-color .25s,color .25s}
+    .filter-btn:hover,.filter-btn.active{background:var(--dark);border-color:var(--dark);color:var(--light)}
+    .blog-list{background:var(--light);padding:3rem 8% 6rem}
+    .blog-grid-full{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem}
+    .blog-card{background:#fff;border:1px solid rgba(45,6,27,.1);border-radius:var(--r-lg);overflow:hidden;cursor:none;text-decoration:none;color:var(--dark);transition:transform .35s,box-shadow .35s,border-color .35s;display:flex;flex-direction:column}
+    .blog-card:hover{transform:translateY(-6px);box-shadow:0 20px 50px rgba(45,6,27,.12);border-color:rgba(92,75,87,.3)}
+    .blog-card-img{width:100%;aspect-ratio:16/9;object-fit:cover;display:block;background:var(--bege)}
+    .blog-card-img-placeholder{width:100%;aspect-ratio:16/9;background:linear-gradient(135deg,var(--bege) 0%,var(--light) 100%);display:flex;align-items:center;justify-content:center}
+    .blog-card-img-placeholder svg{width:40px;height:40px;fill:rgba(92,75,87,.3)}
+    .blog-card-body{padding:1.5rem;flex:1;display:flex;flex-direction:column}
+    .blog-card-tag{font-size:.64rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);margin-bottom:.7rem;display:flex;align-items:center;gap:.5rem}
+    .blog-card-tag::before{content:'';display:block;width:16px;height:2px;background:var(--muted);border-radius:1px}
+    .blog-card h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--dark);line-height:1.35;margin-bottom:.7rem}
+    .blog-card p{font-size:.82rem;color:var(--muted);line-height:1.7;font-weight:300;flex:1}
+    .blog-card-footer{display:flex;align-items:center;justify-content:space-between;margin-top:1.2rem;padding-top:1rem;border-top:1px solid rgba(45,6,27,.08)}
+    .blog-card-date{font-size:.7rem;color:var(--muted);font-weight:300;opacity:.7}
+    .blog-card-link{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dark);opacity:.6;transition:opacity .3s}
+    .blog-card:hover .blog-card-link{opacity:1}
+    .blog-empty{grid-column:1/-1;text-align:center;padding:4rem 0;color:var(--muted);font-size:.95rem;opacity:.6}
+    @media(max-width:900px){.blog-hero{padding:8rem 6% 4rem}.blog-filters{padding:1.5rem 6%}.blog-list{padding:2rem 6% 4rem}.blog-grid-full{grid-template-columns:1fr}nav{padding:.9rem 5%}.nav-links{display:none}}
+    @media(min-width:600px) and (max-width:900px){.blog-grid-full{grid-template-columns:repeat(2,1fr)}}
+  </style>
+</head>
+<body>
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<nav id="navbar" class="nav-dark">
+  <div class="nav-logo"><img src="../images/logo.png" alt="Amanda Reis Advocacia"/></div>
+  <ul class="nav-links">
+    <li><a href="../index.html#sobre">Sobre</a></li>
+    <li><a href="../index.html#atuacao">Atuação</a></li>
+    <li><a href="../index.html#diferenciais">Diferenciais</a></li>
+    <li><a href="../index.html#contato" class="nav-cta">Fale Conosco</a></li>
+  </ul>
+</nav>
+<section class="blog-hero">
+  <div class="blog-hero-glow"></div>
+  <a href="../index.html" class="back-link">← Voltar ao site</a>
+  <h1>Blog <em>Jurídico</em></h1>
+  <p>Artigos e orientações sobre Direito Previdenciário, Trabalhista, Família e Eleitoral.</p>
+</section>
+<div class="blog-filters">
+  <span class="filter-label">Filtrar:</span>
+  <button class="filter-btn active" data-cat="Todos">Todos</button>
+  <button class="filter-btn" data-cat="Previdenciário">Previdenciário</button>
+  <button class="filter-btn" data-cat="Trabalhista">Trabalhista</button>
+  <button class="filter-btn" data-cat="Família">Família</button>
+  <button class="filter-btn" data-cat="Eleitoral">Eleitoral</button>
+</div>
+<section class="blog-list">
+  <div class="blog-grid-full" id="blog-grid-full">
+    <p class="blog-empty">Carregando artigos…</p>
+  </div>
+</section>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-logo"><img src="../images/logo.png" alt="Amanda Reis Advocacia"/></div>
+    <p class="footer-copy">© 2025 Amanda Reis Advocacia. Todos os direitos reservados.</p>
+    <div class="footer-links">
+      <a href="https://www.instagram.com/advamandareis/">Instagram</a>
+      <a href="https://wa.me/5561999284025">WhatsApp</a>
+    </div>
+  </div>
+</footer>
+<script>
+  const FIREBASE_CONFIG = {
+    apiKey:"COLE_SEU_apiKey_AQUI",authDomain:"COLE_SEU_authDomain_AQUI",
+    projectId:"COLE_SEU_projectId_AQUI",storageBucket:"COLE_SEU_storageBucket_AQUI",
+    messagingSenderId:"COLE_SEU_messagingSenderId_AQUI",appId:"COLE_SEU_appId_AQUI"
+  };
+
+  const cur=document.getElementById('cursor'),curR=document.getElementById('cursorRing');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function anim(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(anim);})();
+  document.querySelectorAll('a,button').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{cur.style.transform='translate(-50%,-50%) scale(2.8)';cur.style.background='rgba(224,204,199,.35)';});
+    el.addEventListener('mouseleave',()=>{cur.style.transform='translate(-50%,-50%) scale(1)';cur.style.background='var(--bege)';});
+  });
+  const nav=document.getElementById('navbar');
+  window.addEventListener('scroll',()=>nav.classList.toggle('scrolled',window.scrollY>60));
+
+  let catAtiva='Todos', ARTIGOS_FB=[];
+  document.querySelectorAll('.filter-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active'); catAtiva=btn.dataset.cat; renderGrid();
+    });
+  });
+
+  function estaPublicado(a){
+    if(!a.publicadoEm) return true;
+    const hoje=new Date(); hoje.setHours(0,0,0,0);
+    return new Date(a.publicadoEm+'T00:00:00')<=hoje;
+  }
+
+  function cardHTML(a){
+    return `<a href="artigo.html?id=${a._docid}" class="blog-card">
+      ${a.foto
+        ?`<img class="blog-card-img" src="${a.foto}" alt="${a.titulo}" loading="lazy"/>`
+        :`<div class="blog-card-img-placeholder"><svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg></div>`
+      }
+      <div class="blog-card-body">
+        <div class="blog-card-tag">${a.categoria||'Artigo'}</div>
+        <h3>${a.titulo}</h3>
+        <p>${a.resumo}</p>
+        <div class="blog-card-footer">
+          <span class="blog-card-date">${a.data}</span>
+          <span class="blog-card-link">Ler mais →</span>
+        </div>
+      </div>
+    </a>`;
+  }
+
+  function renderGrid(){
+    const grid=document.getElementById('blog-grid-full');
+    const lista=ARTIGOS_FB.filter(estaPublicado).filter(a=>catAtiva==='Todos'||a.categoria===catAtiva);
+    grid.innerHTML=lista.length?lista.map(cardHTML).join(''):'<p class="blog-empty">Nenhum artigo nesta categoria.</p>';
+  }
+
+  window.addEventListener('load',()=>{
+    import('https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js').then(({initializeApp})=>{
+      import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js').then(async({getFirestore,collection,getDocs,orderBy,query})=>{
+        const app=initializeApp(FIREBASE_CONFIG);
+        const db=getFirestore(app);
+        try{
+          const q=query(collection(db,'artigos'),orderBy('publicadoEm','desc'));
+          const snap=await getDocs(q);
+          ARTIGOS_FB=snap.docs.map(d=>({_docid:d.id,...d.data()}));
+          renderGrid();
+        } catch(e){
+          document.getElementById('blog-grid-full').innerHTML='<p class="blog-empty">Erro ao carregar artigos.</p>';
+        }
+      });
+    });
+  });
+</script>
+</body>
+</html>
