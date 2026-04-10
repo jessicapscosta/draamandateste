@@ -357,7 +357,7 @@ window.addEventListener('load', () => {
       import('https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js'),
       import('https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js'),
     ]).then(([authMod, fsMod]) => {
-      const app = initializeApp(FIREBASE_CONFIG);
+      const app = initializeApp(firebaseConfig);
       auth = authMod.getAuth(app);
       db   = fsMod.getFirestore(app);
 
